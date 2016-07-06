@@ -1,0 +1,34 @@
+body {
+	
+}
+
+#geo_status {
+	background-color: yellow;
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+	display: inline-block;
+}
+
+#location {
+	height: 1em;
+}
+
+.center-block {
+	margin: 5px auto 5px auto;
+}
+
+.center-text {
+	text-align: center;
+}
+
+select.dropdown {
+	display: block;
+}
+
+input {
+	display: block;
+}
+
+#tag {
+}
