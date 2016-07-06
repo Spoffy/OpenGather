@@ -2,6 +2,10 @@ body {
 	
 }
 
+#data-form {
+	text-align: center;
+}
+
 #geo_status {
 	background-color: yellow;
 	border-radius: 50%;
@@ -22,12 +26,8 @@ body {
 	text-align: center;
 }
 
-select.dropdown {
-	display: block;
-}
-
-input {
-	display: block;
+.form-field {
+	display: inline-block;
 }
 
 #tag {

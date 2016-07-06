@@ -1,3 +1,7 @@
+<?php
+    $categories = ["Building", "Portal", "Image"];
+?>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -12,11 +16,20 @@
     <p id="geo_status_text">Tool not initialised</p>
 </div>
 <form id="data-form">
-	<select class="dropdown center-block">
-	  <option value="test">Testing</option>
+    <label for="type">Object</label>
+	<select class="form-field" id="type">
+        <?php
+            foreach ($categories as $category) {
+                print("<option value='$category'>$category</option>");
+            }
+        ?>
 	</select>
-	<input type="text" class="center-block" id="tag" />
-	<input type="submit" class="center-block" value="Log Data" />
+    <br/>
+    <label for="tag">Tag As</label>
+	<input type="text" class="form-field" id="tag" />
+    <br/>
+	<input type="submit" class="form-field" value="Log Data" id="submit" />
 </form>
+<div class="center-block center-text" id="submit-status"></div>
 </body>
 </html>

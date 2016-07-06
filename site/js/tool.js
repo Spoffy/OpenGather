@@ -1,9 +1,12 @@
 var openDataGatherer = function() {
 	var root = {};
+    root.DATA_URL = "record_data.php"
+
 	root.onReady = function() {
 		$("#data-form").submit(function(e) {
-			console.log("Fire!");
 			e.preventDefault();
+            console.log(root.getData());
+            root.postData(root.getData());
 		});
 
         $("#geo_status").click(function() {
@@ -56,6 +59,7 @@ var openDataGatherer = function() {
 				root.setGeoStatus(root.GEO_STATUSES.SUCCEEDED);
                 root.setGeoStatusMessage("Position acquired with accuracy of " + pos.coords.accuracy + "m");
 				root.setGeoLocationMessage("Pos: " + pos.coords.latitude + " " + pos.coords.longitude);
+                root.lastPosition = pos;
 			}, function(error) {
 				root.setGeoStatus(root.GEO_STATUSES.FAILED);
                 root.setGeoStatusMessage(error.message);
@@ -64,6 +68,32 @@ var openDataGatherer = function() {
 			root.setGeoStatus("Geolocation not available");
 		}
 	};
+    
+    root.getData = function () {
+        return {
+            time: (new Date()).getTime(),
+            label: $("#tag").val(),
+            type: $("#type").val(),
+            position: root.lastPosition? {
+                lat: root.lastPosition.coords.latitude,
+                long: root.lastPosition.coords.longitude,
+                accuracy: root.lastPosition.coords.accuracy
+            } : null
+        }
+    };
+
+    root.postData = function(data) {
+        $.post({
+            url: root.DATA_URL,
+            data: data,
+            success: function () {
+                $("#submit-status").text("Data sent successfully");
+            },
+            error: function (req, message) {
+                $("#submit-status").text("Failed to send data: " + message);
+            }
+        });
+    };
 	
     return root;
 }();
