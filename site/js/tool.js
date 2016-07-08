@@ -19,6 +19,10 @@ var openDataGatherer = function() {
             root.postData(root.getData());
 		});
 
+        $("#geo_status").click(function (e) {
+            root.pollGeo();
+        });
+
         root.watchGeo();
 	};
 
@@ -45,25 +49,37 @@ var openDataGatherer = function() {
         $("#location").text(statusMessage);
     };
 
-	root.watchGeo = function() {
-		if("geolocation" in navigator) {
+    root.onGeoSuccess = function(pos) {
+        root.setGeoStatus(root.GEO_STATUSES.SUCCEEDED);
+        root.setGeoStatusMessage("Position acquired with accuracy of " + pos.coords.accuracy + "m");
+        root.setGeoLocationMessage("Pos: " + pos.coords.latitude + " " + pos.coords.longitude);
+        root.lastPosition = pos;
+    };
+
+    root.onGeoError = function(error) {
+        root.setGeoStatus(root.GEO_STATUSES.FAILED);
+        root.setGeoStatusMessage(error.message);
+    };
+
+    root.performGeo = function(geoRequestFunction) {
+        if("geolocation" in navigator) {
             root.setGeoStatus(root.GEO_STATUSES.ACQUIRING);
             root.setGeoStatusMessage("Acquiring position...");
             root.setGeoLocationMessage("");
 
-			navigator.geolocation.watchPosition(function(pos) {
-				root.setGeoStatus(root.GEO_STATUSES.SUCCEEDED);
-                root.setGeoStatusMessage("Position acquired with accuracy of " + pos.coords.accuracy + "m");
-				root.setGeoLocationMessage("Pos: " + pos.coords.latitude + " " + pos.coords.longitude);
-                root.lastPosition = pos;
-			}, function(error) {
-				root.setGeoStatus(root.GEO_STATUSES.FAILED);
-                root.setGeoStatusMessage(error.message);
-			}, root.GEO_OPTIONS);
-		} else {
-			root.setGeoStatusMessage("Geolocation not available");
-		}
-	};
+            geoRequestFunction(
+                root.onGeoSuccess,
+                root.onGeoError,
+                root.GEO_OPTIONS
+            );
+
+        } else {
+            root.setGeoStatusMessage("Geolocation not available");
+        }
+    };
+
+    root.watchGeo = root.performGeo.bind(root, navigator.geolocation.watchPosition.bind(navigator.geolocation));
+    root.pollGeo = root.performGeo.bind(root, navigator.geolocation.getCurrentPosition.bind(navigator.geolocation));
     
     root.getData = function () {
         return {
