@@ -9,9 +9,12 @@
 <script type="text/javascript" src="js/jquery-3.0.0.js"></script>
 <script type="text/javascript" src="js/tool.js"></script>
 </head>
-<body>
+<body class="app-holder">
 <div class="center-block center-text">
-    <div id="geo_status"> </div>
+    <div id="geo_container">
+        <div class="height_control"></div>
+        <div id="geo_status"></div>
+    </div>
     <p id="location"></p>
     <p id="geo_status_text">Tool not initialised</p>
 </div>

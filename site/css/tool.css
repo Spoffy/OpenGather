@@ -1,5 +1,9 @@
-body {
-	
+@media(min-width: 600px) {
+    .app-holder {
+        width: 40%;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 #data-form {
@@ -9,9 +13,18 @@ body {
 #geo_status {
 	background-color: yellow;
 	border-radius: 50%;
-	width: 100px;
-	height: 100px;
-	display: inline-block;
+	position: absolute;
+    top: 0px; right: 0px; bottom: 0px; left: 0px;
+}
+
+#geo_container {
+    position: relative;
+    display: inline-block;
+    width: 50%;
+}
+
+#geo_container > .height_control {
+    margin-top: 100%;
 }
 
 #location {
@@ -28,6 +41,8 @@ body {
 
 .form-field {
 	display: inline-block;
+    width: 70%;
+    margin: 10px;
 }
 
 #tag {
