@@ -61,7 +61,7 @@ var openDataGatherer = function() {
                 root.setGeoStatusMessage(error.message);
 			}, root.GEO_OPTIONS);
 		} else {
-			root.setGeoStatus("Geolocation not available");
+			root.setGeoStatusMessage("Geolocation not available");
 		}
 	};
     
