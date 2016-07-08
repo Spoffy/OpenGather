@@ -1,5 +1,5 @@
 <?php
-    $categories = ["Building", "Portal", "Image"];
+    $categories = array("Building", "Portal", "Image");
 ?>
 
 <html>

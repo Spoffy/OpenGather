@@ -29,14 +29,14 @@ try {
 
     $addDataStatement = $conn->prepare($addDataQuery);
 
-    $params = [
+    $params = array(
         ":time" => $_POST["time"],
         ":label" => $_POST["label"],
         ":type" => $_POST["type"],
         ":lat" => $_POST["position"]["lat"],
         ":long" => $_POST["position"]["long"],
         ":accuracy" => $_POST["position"]["accuracy"]
-    ];
+    );
 
     print($addDataStatement->execute($params));
 } catch(PDOException $e) {
