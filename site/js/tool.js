@@ -2,6 +2,16 @@ var openDataGatherer = function() {
 	var root = {};
     root.DATA_URL = "record_data.php"
 
+    root.GEO_OPTIONS = {
+        enableHighAccuracy: true
+    };
+
+    root.GEO_STATUSES = {
+        ACQUIRING: 1,
+        FAILED: 2,
+        SUCCEEDED: 3
+    };
+
 	root.onReady = function() {
 		$("#data-form").submit(function(e) {
 			e.preventDefault();
@@ -9,21 +19,7 @@ var openDataGatherer = function() {
             root.postData(root.getData());
 		});
 
-        $("#geo_status").click(function() {
-            root.pollGeo();
-        });
-
-        root.pollGeo();
-	};
-
-    root.GEO_OPTIONS = {
-        enableHighAccuracy: true
-    };
-
-	root.GEO_STATUSES = {
-		ACQUIRING: 1,
-		FAILED: 2,
-		SUCCEEDED: 3
+        root.watchGeo();
 	};
 
 	root.setGeoStatusMessage = function(statusMessage) {
@@ -49,13 +45,13 @@ var openDataGatherer = function() {
         $("#location").text(statusMessage);
     };
 
-	root.pollGeo = function() {
+	root.watchGeo = function() {
 		if("geolocation" in navigator) {
             root.setGeoStatus(root.GEO_STATUSES.ACQUIRING);
             root.setGeoStatusMessage("Acquiring position...");
             root.setGeoLocationMessage("");
 
-			navigator.geolocation.getCurrentPosition(function(pos) {
+			navigator.geolocation.watchPosition(function(pos) {
 				root.setGeoStatus(root.GEO_STATUSES.SUCCEEDED);
                 root.setGeoStatusMessage("Position acquired with accuracy of " + pos.coords.accuracy + "m");
 				root.setGeoLocationMessage("Pos: " + pos.coords.latitude + " " + pos.coords.longitude);
