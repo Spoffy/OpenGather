@@ -4,12 +4,15 @@
 
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css" href="css/tool.css" media="all" />
-<script type="text/javascript" src="js/jquery-3.0.0.js"></script>
-<script type="text/javascript" src="js/tool.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css" href="css/tool.css" media="all" />
+    <script type="text/javascript" src="js/jquery-3.0.0.js"></script>
+    <script type="text/javascript" src="js/tool.js"></script>
 </head>
 <body class="app-holder">
+
 <div class="center-block center-text">
     <div id="geo_container">
         <div class="height_control"></div>
@@ -34,5 +37,6 @@
 	<input type="submit" class="form-field" value="Log Data" id="submit" />
 </form>
 <div class="center-block center-text" id="submit-status"></div>
+
 </body>
 </html>
