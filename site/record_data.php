@@ -32,16 +32,23 @@ try {
     $params = array(
         ":time" => $_POST["time"],
         ":label" => $_POST["label"],
-        ":type" => $_POST["type"],
-        ":lat" => $_POST["position"]["lat"],
-        ":long" => $_POST["position"]["long"],
-        ":accuracy" => $_POST["position"]["accuracy"]
+        ":type" => $_POST["type"]
     );
+
+    if($_POST["position"]) {
+        $params[":lat"] = $_POST["position"]["lat"];
+        $params[":long"] = $_POST["position"]["long"];
+        $params[":accuracy"] = $_POST["position"]["accuracy"];
+    } else {
+        $params[":lat"] = 0;
+        $params[":long"] = 0;
+        $params[":accuracy"] = -1;
+    }
 
     print($addDataStatement->execute($params));
 } catch(PDOException $e) {
     error_log($e->getMessage());
-    header($_SERVER['SERVER_PROTOCOL'] . '405 Internal Server Error');
+    header($_SERVER['SERVER_PROTOCOL'] . '500 Internal Server Error');
     print("MySQL Database error. See PHP error log");
     die();
 }
