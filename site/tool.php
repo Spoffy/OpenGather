@@ -9,6 +9,11 @@
 
     <link rel="stylesheet" type="text/css" href="css/tool.css" media="all" />
     <script type="text/javascript" src="js/jquery-3.0.0.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="leaflet/leaflet.css" />
+    <script type="text/javascript" src="leaflet/leaflet.js"></script>
+    <script type="text/javascript" src="js/clickymap.js"></script>
+
     <script type="text/javascript" src="js/tool.js"></script>
 </head>
 <body class="app-holder">
@@ -21,6 +26,11 @@
     <p id="location"></p>
     <p id="geo_status_text">Tool not initialised</p>
 </div>
+
+<div class="center-block" id="map">
+
+</div>
+
 <form id="data-form">
     <label for="type">Object</label>
 	<select class="form-field" id="type">
