@@ -95,6 +95,7 @@ var openDataGatherer = function() {
     };
 
     root.postData = function(data) {
+        $("#submit-status").text("Sending data...");
         $.post({
             url: root.DATA_URL,
             data: data,
