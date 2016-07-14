@@ -1,6 +1,8 @@
-var openDataGatherer = function() {
+window.openDataGatherer = function() {
 	var root = {};
-    root.DATA_URL = "record_data.php"
+
+    root.DATA_URL = "record_data.php";
+    root.LOCAL_CACHE_KEY = "opengather_local_backup";
 
     root.GEO_OPTIONS = {
         enableHighAccuracy: true
@@ -96,6 +98,8 @@ var openDataGatherer = function() {
 
     root.postData = function(data) {
         $("#submit-status").text("Sending data...");
+        root.addDataToLocalBackup(data);
+
         $.post({
             url: root.DATA_URL,
             data: data,
@@ -106,6 +110,20 @@ var openDataGatherer = function() {
                 $("#submit-status").text("Failed to send data: " + message);
             }
         });
+    };
+
+    root.getLocalBackup = function() {
+        return window.localStorage.getItem(root.LOCAL_CACHE_KEY) || "[]";
+    };
+
+    root.storeLocalBackup = function(backupData) {
+        return window.localStorage.setItem(root.LOCAL_CACHE_KEY, JSON.stringify(backupData));
+    }
+
+    root.addDataToLocalBackup = function(data) {
+        var backup = JSON.parse(root.getLocalBackup());
+        backup.push(data);
+        root.storeLocalBackup(backup);
     };
 	
     return root;
