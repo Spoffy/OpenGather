@@ -22,8 +22,6 @@ window.clickymap =  function() {
             var lat = Math.round(e.latlng.lat * RES) / RES;
             var lng = Math.round(e.latlng.lng * RES) / RES;
 
-            console.log("Lat: " + lat + " Long:" + lng);
-
             root.setClickMarkerPosition(e.latlng);
         },
 
@@ -39,6 +37,17 @@ window.clickymap =  function() {
         setMapCentre: function(lat, lng) {
             if(root.map != null) {
                 root.map.setView([lat, lng]);
+            }
+        },
+
+        getMarkerCoords: function() {
+            if(root.marker) { return root.marker.getLatLng(); }
+        },
+
+        clearMarker: function() {
+            if(root.marker) {
+                root.map.removeLayer(root.marker);
+                root.marker = null;
             }
         }
     };

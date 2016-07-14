@@ -51,6 +51,7 @@ window.openDataGatherer = function() {
         $("#location").text(statusMessage);
     };
 
+    //TODO Unify location format
     root.onGeoSuccess = function(pos) {
         root.setGeoStatus(root.GEO_STATUSES.SUCCEEDED);
         root.setGeoStatusMessage("Position acquired with accuracy of " + pos.coords.accuracy + "m");
@@ -84,16 +85,33 @@ window.openDataGatherer = function() {
     root.watchGeo = root.performGeo.bind(root, navigator.geolocation.watchPosition.bind(navigator.geolocation));
     root.pollGeo = root.performGeo.bind(root, navigator.geolocation.getCurrentPosition.bind(navigator.geolocation));
     
+    root.getPosition = function () {
+        var markerCoords = window.clickymap.getMarkerCoords();
+        if(markerCoords) {
+            return {
+                lat: markerCoords.lat,
+                long: markerCoords.lng,
+                accuracy: 0
+            }
+        }
+
+        if(root.lastPosition) {
+            return {
+                lat: root.lastPosition.coords.latitude,
+                long: root.lastPosition.coords.longitude,
+                accuracy: root.lastPosition.coords.accuracy
+            }
+        }
+
+        return null;
+    };
+    
     root.getData = function () {
         return {
             time: (new Date()).getTime(),
             label: $("#tag").val(),
             type: $("#type").val(),
-            position: root.lastPosition? {
-                lat: root.lastPosition.coords.latitude,
-                long: root.lastPosition.coords.longitude,
-                accuracy: root.lastPosition.coords.accuracy
-            } : null
+            position: root.getPosition()
         }
     };
 
@@ -106,9 +124,10 @@ window.openDataGatherer = function() {
             data: data,
             success: function () {
                 $("#submit-status").text("Data sent successfully");
+                window.clickymap.clearMarker();
             },
-            error: function (req, message) {
-                $("#submit-status").text("Failed to send data: " + message);
+            error: function (req, message, errorThrown) {
+                $("#submit-status").text("Failed to send data: " + message + " " + errorThrown);
             }
         });
     };
