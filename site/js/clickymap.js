@@ -34,6 +34,12 @@ window.clickymap =  function() {
 
         setClickMarkerPosition: function(latLng) {
             return root.getClickMarker().setLatLng(latLng);
+        },
+
+        setMapCentre: function(lat, lng) {
+            if(root.map != null) {
+                root.map.setView([lat, lng]);
+            }
         }
     };
 

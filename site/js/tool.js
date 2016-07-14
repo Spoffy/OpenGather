@@ -56,6 +56,7 @@ window.openDataGatherer = function() {
         root.setGeoStatusMessage("Position acquired with accuracy of " + pos.coords.accuracy + "m");
         root.setGeoLocationMessage("Pos: " + pos.coords.latitude + " " + pos.coords.longitude);
         root.lastPosition = pos;
+        window.clickymap.setMapCentre(pos.coords.latitude, pos.coords.longitude);
     };
 
     root.onGeoError = function(error) {
