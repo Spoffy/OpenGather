@@ -2,6 +2,7 @@ window.openDataGatherer = function() {
 	var root = {};
 
     root.DATA_URL = "record_data.php";
+    root.SCHEMA_URL = "ajax/schemajson.php";
     root.LOCAL_CACHE_KEY = "opengather_local_backup";
 
     root.GEO_OPTIONS = {
@@ -21,12 +22,41 @@ window.openDataGatherer = function() {
             root.postData(root.getData());
 		});
 
+        root.initialiseForm();
+
         $("#geo_status").click(function (e) {
             root.pollGeo();
         });
 
         root.watchGeo();
 	};
+
+    //TODO Make this serverside or template it nicer.
+    //This definitely needs less HTML in it.
+    //This should almost all be generated serverside and only switched out in the browser, I think.
+    //That way we can use PHP templating... Alternatively Angular/React but that's heavyweight.
+    root.initialiseForm = function() {
+        var form = $("#data-form");
+        $.get({
+            url: root.SCHEMA_URL,
+            dataType: "json",
+            success: function (schema) {
+                root.schema = schema;
+                form.append('<label for="type">Object Type</label>' +
+                    '<select class="form-field" id="type">' +
+                    '</select>' +
+                    '<br/>');
+                for (var fieldId in root.schema.fields) {
+                    var html = root.schema.fields[fieldId].html;
+                    form.append(html);
+                }
+                form.append('<input type="submit" class="form-field" value="Log Data" id="submit" />');
+            },
+            error: function () {
+                form.append("<p> No schema available, unable to create form.</p>")
+            }
+        });
+    };
 
 	root.setGeoStatusMessage = function(statusMessage) {
 		$("#geo_status_text").text(statusMessage);
