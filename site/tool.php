@@ -1,4 +1,10 @@
 <?php
+    require_once("schema.php");
+    $form_fields = "";
+    foreach($schema->fields as $field) {
+        $form_fields .= $field->buildFormField();
+        $form_fields .= "\n <br/> \n";
+    }
     $categories = array("Building", "Portal", "Image", "Water Source", "Showers", "Lecture Room");
 ?>
 
@@ -32,6 +38,7 @@
 </div>
 
 <form id="data-form">
+    <?php echo $form_fields ?>
     <label for="type">Object</label>
 	<select class="form-field" id="type">
         <?php

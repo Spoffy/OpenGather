@@ -2,16 +2,20 @@
 //Defines a schema for the data to be gathered, and the tools to work with that schema.
 
 abstract class Field {
+    public $name;
     public $id;
     public $required;
 
-    public function __construct($id, $required=false) {
+    public function __construct($name, $id, $required=false) {
+        $this->name = $name;
         $this->id = $id;
         $this->required = $required;
     }
 
     public abstract function buildFormField();
     public abstract function buildMySQLColumn();
+
+    protected $formFieldClasses = "form-field";
 
     protected function nullAttributeMySQL() {
         return ($this->required)? "NOT NULL" : "NULL";
@@ -21,7 +25,9 @@ abstract class Field {
 class TextField extends Field {
     public function buildFormField()
     {
-        // TODO: Implement buildFormField() method.
+        $label = "<label for='form_$this->id'>$this->name</label>";
+        $field = "<input id='form_$this->id' class='$this->formFieldClasses' type='text'/>";
+        return $label . $field;
     }
 
     public function buildMySQLColumn()
@@ -56,21 +62,8 @@ function mySQLTableFromSchema($schema) {
     return $createTableQuery;
 }
 
-$testField = new TextField("TextField");
+$testField = new TextField("Testing Field", "testField");
 $testSchema = new ObjectSchema("SampleSchema", array($testField));
-
-print(mySQLTableFromSchema($testSchema));
-/*
- *  <<< DB
-CREATE TABLE IF NOT EXISTS `app_data` (
-`time` BIGINT NOT NULL ,
-`label` TEXT NOT NULL ,
-`type` TEXT NOT NULL ,
-`latitude` DOUBLE NOT NULL ,
-`longitude` DOUBLE NOT NULL ,
-`accuracy` FLOAT NOT NULL )
- ENGINE = CSV;
-DB;
- */
+$schema = $testSchema;
 
 
