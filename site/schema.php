@@ -63,24 +63,22 @@ class ObjectSchema {
         return $createTableQuery;
     }
 
-    //TODO Make this legible.
-    //TODO Just replace it with JSON. In any situation barring U+2028 and U+2029 we're fine.
-    public function toJavascriptObject() {
-        $object = "{\n";
-        $object .= "'name' : '$this->name',\n";
-        $object .= "'fields' : {\n";
+    public function toJSON() {
+        $object = array(
+            "name" => $this->name,
+            "fields" => array()
+        );
         foreach($this->fields as $field) {
-            $object .= "'$field->id' : '".$field->getFormFieldId()."',\n";
+            $object["fields"][$field->getFormFieldId()] = array(
+                "name" => $field->name,
+                "id" => $field->id,
+                "html" => $field->buildFormField()
+            );
         }
-        $object .= "} \n";
-        $object .= "} \n";
-        return $object;
+        return json_encode($object);
     }
 }
 
 $testField = new TextField("Testing Field", "testField");
 $testSchema = new ObjectSchema("SampleSchema", array($testField));
 $schema = $testSchema;
-
-echo $schema->toJavascriptObject();
-
