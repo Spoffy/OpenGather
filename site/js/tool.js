@@ -105,6 +105,11 @@ window.openDataGatherer = function() {
 
         return null;
     };
+
+    //TODO Enable this. A task by itself, since it'll break everything.
+    root.getTimeSinceEpochSeconds = function() {
+        return Math.floor(new Date().getTime()/1000);
+    }
     
     root.getData = function () {
         return {
