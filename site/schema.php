@@ -13,9 +13,12 @@ abstract class Field {
     }
 
     public abstract function buildFormField();
-    public abstract function buildMySQLColumn();
 
     protected $formFieldClasses = "form-field";
+    public function getFormFieldId() { return "form_$this->id"; }
+
+
+    public abstract function buildMySQLColumn();
 
     protected function nullAttributeMySQL() {
         return ($this->required)? "NOT NULL" : "NULL";
@@ -25,8 +28,8 @@ abstract class Field {
 class TextField extends Field {
     public function buildFormField()
     {
-        $label = "<label for='form_$this->id'>$this->name</label>";
-        $field = "<input id='form_$this->id' class='$this->formFieldClasses' type='text'/>";
+        $label = "<label for='".$this->getFormFieldId()."'>$this->name</label>";
+        $field = "<input id='".$this->getFormFieldId()."' class='$this->formFieldClasses' type='text'/>";
         return $label . $field;
     }
 
@@ -45,25 +48,39 @@ class ObjectSchema {
         $this->name = $name;
         $this->fields = $fields;
     }
-}
 
-//TODO move this to database.php
-function mySQLTableFromSchema($schema) {
-    $createTableQuery = "CREATE TABLE IF NOT EXISTS `$schema->name` (";
-    //Start the column list
-    $createTableQuery .= "id INT NOT NULL AUTO_INCREMENT,";
-    foreach($schema->fields as $field) {
-        $createTableQuery .= $field->buildMySQLColumn();
-        $createTableQuery .= ",";
+    public function buildMySQLCreateTable() {
+        $createTableQuery = "CREATE TABLE IF NOT EXISTS `$this->name` (";
+        //Start the column list
+        $createTableQuery .= "id INT NOT NULL AUTO_INCREMENT,";
+        foreach($this->fields as $field) {
+            $createTableQuery .= $field->buildMySQLColumn();
+            $createTableQuery .= ",";
+        }
+        $createTableQuery .= "PRIMARY KEY(id)";
+        $createTableQuery .= ");";
+        //End column list and QUERY
+        return $createTableQuery;
     }
-    $createTableQuery .= "PRIMARY KEY(id)";
-    $createTableQuery .= ");";
-    //End column list and QUERY
-    return $createTableQuery;
+
+    //TODO Make this legible.
+    //TODO Just replace it with JSON. In any situation barring U+2028 and U+2029 we're fine.
+    public function toJavascriptObject() {
+        $object = "{\n";
+        $object .= "'name' : '$this->name',\n";
+        $object .= "'fields' : {\n";
+        foreach($this->fields as $field) {
+            $object .= "'$field->id' : '".$field->getFormFieldId()."',\n";
+        }
+        $object .= "} \n";
+        $object .= "} \n";
+        return $object;
+    }
 }
 
 $testField = new TextField("Testing Field", "testField");
 $testSchema = new ObjectSchema("SampleSchema", array($testField));
 $schema = $testSchema;
 
+echo $schema->toJavascriptObject();
 
