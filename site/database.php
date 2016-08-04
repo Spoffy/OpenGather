@@ -1,13 +1,15 @@
 <?php
+$base_path = dirname(__DIR__);
+require_once("$base_path/config.php");
 
 //Contains all the query constants.
 //This is done so we don't need "global" every time we use one.
 //TODO Make all of these constants
 class DBQueries
 {
-    public static $createDatabase = "CREATE DATABASE IF NOT EXISTS open_data";
+    public static $createDatabase = "CREATE DATABASE IF NOT EXISTS " . CONFIG_MYSQL_DB;
     public static $createTables = <<< DB
-CREATE TABLE IF NOT EXISTS `open_data`.`app_data` ( 
+CREATE TABLE IF NOT EXISTS `app_data` ( 
 `time` BIGINT NOT NULL , 
 `label` TEXT NOT NULL , 
 `type` TEXT NOT NULL , 
