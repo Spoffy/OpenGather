@@ -35,27 +35,38 @@ window.openDataGatherer = function() {
     //This definitely needs less HTML in it.
     //This should almost all be generated serverside and only switched out in the browser, I think.
     //That way we can use PHP templating... Alternatively Angular/React but that's heavyweight.
+    //Display option via hiding, rather than actually mutating the DOM. CSS will be much nicer AND much faster.
     root.initialiseForm = function() {
         var form = $("#data-form");
         $.get({
             url: root.SCHEMA_URL,
             dataType: "json",
             success: function (schema) {
-                root.schema = schema;
+                root.schemas = schema;
+                if(root.schemas.length <= 0) {
+                    root.onInvalidSchema();
+                    return;
+                }
                 form.append('<label for="type">Object Type</label>' +
                     '<select class="form-field" id="type">' +
                     '</select>' +
                     '<br/>');
-                for (var fieldId in root.schema.fields) {
-                    var html = root.schema.fields[fieldId].html;
+                var selectBox = $("#type");
+                root.schemas.forEach(function(schema) {
+                    selectBox.append("<option value='" + schema.name + "'>" + schema.name + "</option>");
+                });
+                for (var fieldId in root.schemas[0].fields) {
+                    var html = root.schemas[0].fields[fieldId].html;
                     form.append(html);
                 }
                 form.append('<input type="submit" class="form-field" value="Log Data" id="submit" />');
             },
-            error: function () {
-                form.append("<p> No schema available, unable to create form.</p>")
-            }
+            error: root.onInvalidSchema
         });
+    };
+
+    root.onInvalidSchema = function() {
+        $("#data-form").append("<p> No schemas available, unable to create form.</p>")
     };
 
 	root.setGeoStatusMessage = function(statusMessage) {

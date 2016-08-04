@@ -1,5 +1,5 @@
 <?php
-//Defines a schema for the data to be gathered, and the tools to work with that schema.
+//Defines a schemas for the data to be gathered, and the tools to work with that schemas.
 
 abstract class Field {
     public $name;
@@ -63,7 +63,7 @@ class ObjectSchema {
         return $createTableQuery;
     }
 
-    public function toJSON() {
+    public function toJSONEncodableWebFormat() {
         $object = array(
             "name" => $this->name,
             "fields" => array()
@@ -75,10 +75,10 @@ class ObjectSchema {
                 "html" => $field->buildFormField()
             );
         }
-        return json_encode($object);
+        return $object;
     }
 }
 
 $testField = new TextField("Testing Field", "testField");
 $testSchema = new ObjectSchema("SampleSchema", array($testField));
-$schema = $testSchema;
+$schemas = array($testSchema);

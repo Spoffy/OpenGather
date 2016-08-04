@@ -2,6 +2,12 @@
 $basePath = dirname(dirname(__DIR__));
 require_once("$basePath/site/schema.php");
 
-//This file just returns the schema in JSON
+$schemaToWebFormat = function ($schema) {
+  return $schema->toJSONEncodableWebFormat();
+};
+$preparedSchemas = array_map($schemaToWebFormat, $schemas);
+$json = json_encode($preparedSchemas);
+
+//This file just returns the schemas in JSON
 header("Content-Type: application/json");
-print($schema->toJSON());
+print($json);
