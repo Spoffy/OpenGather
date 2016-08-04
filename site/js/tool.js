@@ -41,17 +41,17 @@ window.openDataGatherer = function() {
         $.get({
             url: root.SCHEMA_URL,
             dataType: "json",
-            success: function (schema) {
-                root.schemas = schema;
+            success: function (schemas) {
+                root.schemas = schemas;
                 if(root.schemas.length <= 0) {
                     root.onInvalidSchema();
                     return;
                 }
                 form.append('<label for="type">Object Type</label>' +
-                    '<select class="form-field" id="type">' +
+                    '<select class="form-field" id="schema">' +
                     '</select>' +
                     '<br/>');
-                var selectBox = $("#type");
+                var selectBox = $("#schema");
                 root.schemas.forEach(function(schema) {
                     selectBox.append("<option value='" + schema.name + "'>" + schema.name + "</option>");
                 });
@@ -66,7 +66,11 @@ window.openDataGatherer = function() {
     };
 
     root.onInvalidSchema = function() {
-        $("#data-form").append("<p> No schemas available, unable to create form.</p>")
+        $("#data-form").append("<p> No schemas available, unable to create form.</p>");
+    };
+
+    root.onSchemaChange = function() {
+
     };
 
 	root.setGeoStatusMessage = function(statusMessage) {
