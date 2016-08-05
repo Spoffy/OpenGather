@@ -54,10 +54,6 @@ class Database {
         foreach($schema->fields as $field) {
             $insertionBindings[":$field->id"] = $data[$field->id];
         }
-        error_log($schema->buildMySQLInsertQuery());
-        foreach($insertionBindings as $binding => $value) {
-            error_log("$binding => $value");
-        }
         $insertStatement = $this->conn->prepare($schema->buildMySQLInsertQuery());
         $insertStatement->execute($insertionBindings);
     }
