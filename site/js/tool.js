@@ -76,6 +76,7 @@ window.openDataGatherer = function() {
         //Populate the fields
         for (var fieldId in newSchema.fields) {
             var html = newSchema.fields[fieldId].html;
+            html += "<br/>";
             form.append(html);
         }
 
