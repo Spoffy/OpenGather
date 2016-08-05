@@ -8,7 +8,7 @@ require_once("$base_path/config.php");
 //TODO Make all of these constants
 class DBQueries
 {
-    public static $createDatabase = "CREATE DATABASE IF NOT EXISTS " . CONFIG_MYSQL_DB;
+    public static $createDatabase;
     public static $createMainTable = <<< DB
 CREATE TABLE IF NOT EXISTS `data_entries` ( 
 `id` INT NOT NULL AUTO_INCREMENT,
@@ -19,6 +19,8 @@ PRIMARY KEY(`id`)
 DB;
     public static $addMainEntryQuery = "INSERT INTO open_data.data_entries (`time`, `schema`) VALUES (:time, :schema)";
 }
+//Down here as PHP 5.5 or less doesn't support expressions as initializers.
+DBQueries::$createDatabase = "CREATE DATABASE IF NOT EXISTS " . CONFIG_MYSQL_DB;
 
 class Database {
     public $conn;
