@@ -39,6 +39,33 @@ class TextField extends Field {
     }
 }
 
+class DropdownField extends Field {
+    public function buildFormField()
+    {
+        // TODO: Implement buildFormField() method.
+    }
+
+    public function buildMySQLColumn()
+    {
+        // TODO: Implement buildMySQLColumn() method.
+    }
+}
+
+//TODO Add CSS highlighting to readonly fields
+class GeoField extends Field {
+    public function buildFormField()
+    {
+        $label = "<label for='".$this->getFormFieldId()."'>$this->name</label>";
+        $field = "<input disabled id='".$this->getFormFieldId()."' class='$this->formFieldClasses' type='text'/>";
+        return $label . $field;
+    }
+
+    public function buildMySQLColumn()
+    {
+        return "`$this->id` DECIMAL(13,10) ".$this->nullAttributeMySQL();
+    }
+}
+
 class ObjectSchema {
     public $name;
     public $id;
@@ -94,10 +121,19 @@ class ObjectSchema {
     }
 }
 
-$testField = new TextField("First Schema Field", "schemaField11");
-$testSchema = new ObjectSchema("First Schema", array($testField));
+//TODO Make JS validate required fields.
+$entranceSchema = new ObjectSchema("Building Entrance", array(
+    new TextField("Building Number", "buildingId", false),
+    new TextField("Entrance Label", "entranceId", false),
+    new TextField("Description", "description", false),
+    new GeoField("Latitude", "lat", false),
+    new GeoField("Longitude", "long", false),
+    new TextField("Access Method Daytime", "accessDaytime", false),
+    new TextField("Access Method Evening", "accessEvening", false)
+));
 
-$testField2 = new TextField("Second Schema Field", "schemaField21");
-$testField3 = new TextField("Second Schema Field 2", "schemaField22");
-$testSchema2 = new ObjectSchema("Second Schema", array($testField2));
-$schemas = array($testSchema, $testSchema2);
+$otherSchema = new ObjectSchema("Other", array(
+    new TextField("Description", "description", false)
+));
+
+$schemas = array($entranceSchema, $otherSchema);
