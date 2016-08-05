@@ -56,7 +56,7 @@ class GeoField extends Field {
     public function buildFormField()
     {
         $label = "<label for='".$this->getFormFieldId()."'>$this->name</label>";
-        $field = "<input disabled id='".$this->getFormFieldId()."' class='$this->formFieldClasses' type='text'/>";
+        $field = "<input disabled id='".$this->getFormFieldId()."' class='$this->formFieldClasses' type='text' value='0' />";
         return $label . $field;
     }
 
