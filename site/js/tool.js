@@ -46,7 +46,6 @@ window.openDataGatherer = function() {
             },
             error: root.onInvalidSchema
         });
-        form.change(root.onSchemaChange);
     };
 
     //TODO Make this serverside or template it nicer.
@@ -55,6 +54,7 @@ window.openDataGatherer = function() {
     //That way we can use PHP templating... Alternatively Angular/React but that's heavyweight.
     //Display option via hiding, rather than actually mutating the DOM. CSS will be much nicer AND much faster.
     root.setSchema = function( newSchema ) {
+        root.currentSchema = newSchema;
         var form = $("#data-form");
         form.empty();
 
@@ -70,6 +70,8 @@ window.openDataGatherer = function() {
             selectBox.append("<option value='" + schema.name + "'>" + schema.name + "</option>");
         });
         selectBox.val(newSchema.name);
+        //Be cautious we don't infinitely recurse here...
+        selectBox.change(root.onSchemaChange)
 
         //Populate the fields
         for (var fieldId in newSchema.fields) {
@@ -79,7 +81,7 @@ window.openDataGatherer = function() {
 
         //Add a submit button
         form.append('<input type="submit" class="form-field" value="Log Data" id="submit" />');
-    }
+    };
 
     root.onInvalidSchema = function() {
         $("#data-form").append("<p> No schemas available, unable to create form.</p>");
@@ -185,12 +187,14 @@ window.openDataGatherer = function() {
     }
     
     root.getData = function () {
-        return {
+        var data = {
             time: (new Date()).getTime(),
-            label: $("#tag").val(),
-            type: $("#schema").val(),
-            position: root.getPosition()
-        }
+            schema: root.currentSchema.name
+        };
+        root.currentSchema.fields.forEach(function(field) {
+            data[field.id] = $("#"+field.formId).val();
+        });
+        return data;
     };
 
     root.postData = function(data) {

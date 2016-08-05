@@ -69,9 +69,10 @@ class ObjectSchema {
             "fields" => array()
         );
         foreach($this->fields as $field) {
-            $object["fields"][$field->getFormFieldId()] = array(
+            $object["fields"][] = array(
                 "name" => $field->name,
                 "id" => $field->id,
+                "formId" => $field->getFormFieldId(),
                 "html" => $field->buildFormField()
             );
         }
