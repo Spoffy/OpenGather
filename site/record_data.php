@@ -32,7 +32,10 @@ try {
     $database->addEntry($_POST["time"], $requestSchema, $_POST);
 
 } catch(PDOException $e) {
-    error_log($e->getMessage());
+    $message = "MySQL Database Error \n";
+    $message .= "    " . $e->getMessage() . "\n";
+    $message .= "    Data: " . json_encode($_POST);
+    error_log($message);
     print("MySQL Database error. See PHP error log");
     die();
 } catch(Error $e) {
