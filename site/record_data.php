@@ -28,10 +28,8 @@ try {
         }
     }
 
-
     $database = Database::createAndConnect();
-    $database->addMainEntry($_POST["time"], $requestSchema->getMySQLTableName());
-    //$database->addSchemaEntry($requestSchema, $_POST);
+    $database->addEntry($_POST["time"], $requestSchema, $_POST);
 
 } catch(PDOException $e) {
     error_log($e->getMessage());

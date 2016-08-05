@@ -41,16 +41,18 @@ class TextField extends Field {
 
 class ObjectSchema {
     public $name;
+    public $id;
     public $fields = array();
 
     public function __construct($name, $fields = array())
     {
         $this->name = $name;
+        $this->id = $name;
         $this->fields = $fields;
     }
 
     public function buildMySQLCreateTable() {
-        $createTableQuery = "CREATE TABLE IF NOT EXISTS `$this->name` (";
+        $createTableQuery = "CREATE TABLE IF NOT EXISTS `".$this->id."` (";
         //Start the column list
         $createTableQuery .= "id INT NOT NULL AUTO_INCREMENT,";
         foreach($this->fields as $field) {
@@ -63,10 +65,18 @@ class ObjectSchema {
         return $createTableQuery;
     }
 
-    public function getMySQLTableName() {
-        return $this->name;
+    public function buildMySQLInsertQuery() {
+        //TODO Find a way to move LAST_INSERT_ID() to the database module.
+        //It introduces an ordering requirement that's bad.
+        $insertQuery = "INSERT INTO `".$this->id."` VALUES (LAST_INSERT_ID()";
+        foreach($this->fields as $field) {
+            $insertQuery .= ", :$field->id";
+        }
+        $insertQuery .= ");";
+        return $insertQuery;
     }
 
+    //TODO Make posting + form use schema id, rather than name.
     public function toJSONEncodableWebFormat() {
         $object = array(
             "name" => $this->name,

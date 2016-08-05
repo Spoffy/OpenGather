@@ -1,5 +1,6 @@
 <?php
 $base_path = dirname(__DIR__);
+require_once("$base_path/site/schema.php");
 require_once("$base_path/config.php");
 
 //Contains all the query constants.
@@ -28,8 +29,14 @@ class Database {
             CONFIG_MYSQL_PASSWORD);
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+        //TODO find a way to not run this EVERY connection
         $this->conn->exec(DBQueries::$createDatabase);
         $this->conn->exec(DBQueries::$createMainTable);
+
+        global $schemas;
+        foreach($schemas as $schema) {
+            $this->conn->exec($schema->buildMySQLCreateTable());
+        }
 
         return $this;
     }
@@ -40,8 +47,18 @@ class Database {
         return $database;
     }
 
-    public function addMainEntry($time, $schema) {
-        $statement = $this->conn->prepare(DBQueries::$addMainEntryQuery);
-        $statement->execute(array(":time" => $time, ":schema" => $schema));
+    public function addEntry($time, $schema, $data) {
+        $mainStatement = $this->conn->prepare(DBQueries::$addMainEntryQuery);
+        $mainStatement->execute(array(":time" => $time, ":schema" => $schema->id));
+        $insertionBindings = array();
+        foreach($schema->fields as $field) {
+            $insertionBindings[":$field->id"] = $data[$field->id];
+        }
+        error_log($schema->buildMySQLInsertQuery());
+        foreach($insertionBindings as $binding => $value) {
+            error_log("$binding => $value");
+        }
+        $insertStatement = $this->conn->prepare($schema->buildMySQLInsertQuery());
+        $insertStatement->execute($insertionBindings);
     }
 }
