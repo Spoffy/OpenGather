@@ -63,6 +63,10 @@ class ObjectSchema {
         return $createTableQuery;
     }
 
+    public function getMySQLTableName() {
+        return $this->name;
+    }
+
     public function toJSONEncodableWebFormat() {
         $object = array(
             "name" => $this->name,

@@ -8,17 +8,15 @@ require_once("$base_path/config.php");
 class DBQueries
 {
     public static $createDatabase = "CREATE DATABASE IF NOT EXISTS " . CONFIG_MYSQL_DB;
-    public static $createTables = <<< DB
-CREATE TABLE IF NOT EXISTS `app_data` ( 
+    public static $createMainTable = <<< DB
+CREATE TABLE IF NOT EXISTS `data_entries` ( 
+`id` INT NOT NULL AUTO_INCREMENT,
 `time` BIGINT NOT NULL , 
-`label` TEXT NOT NULL , 
-`type` TEXT NOT NULL , 
-`latitude` DOUBLE NOT NULL , 
-`longitude` DOUBLE NOT NULL , 
-`accuracy` FLOAT NOT NULL )
- ENGINE = CSV;
+`schema` TEXT NOT NULL,
+PRIMARY KEY(`id`)
+);
 DB;
-    public static $addDataQuery = "INSERT INTO open_data.app_data VALUES (:time, :label, :type, :lat, :long, :accuracy)";
+    public static $addMainEntryQuery = "INSERT INTO open_data.data_entries (`time`, `schema`) VALUES (:time, :schema)";
 }
 
 class Database {
@@ -31,7 +29,7 @@ class Database {
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $this->conn->exec(DBQueries::$createDatabase);
-        $this->conn->exec(DBQueries::$createTables);
+        $this->conn->exec(DBQueries::$createMainTable);
 
         return $this;
     }
@@ -42,9 +40,8 @@ class Database {
         return $database;
     }
 
-    public function addData($params) {
-        $statement = $this->conn->prepare(DBQueries::$addDataQuery);
-        print("Adding data");
-        $statement->execute($params);
+    public function addMainEntry($time, $schema) {
+        $statement = $this->conn->prepare(DBQueries::$addMainEntryQuery);
+        $statement->execute(array(":time" => $time, ":schema" => $schema));
     }
 }
