@@ -79,6 +79,10 @@ class ObjectSchema {
     }
 }
 
-$testField = new TextField("Testing Field", "testField");
-$testSchema = new ObjectSchema("SampleSchema", array($testField));
-$schemas = array($testSchema);
+$testField = new TextField("First Schema Field", "schemaField11");
+$testSchema = new ObjectSchema("First Schema", array($testField));
+
+$testField2 = new TextField("Second Schema Field", "schemaField21");
+$testField3 = new TextField("Second Schema Field 2", "schemaField22");
+$testSchema2 = new ObjectSchema("Second Schema", array($testField2));
+$schemas = array($testSchema, $testSchema2);

@@ -31,11 +31,6 @@ window.openDataGatherer = function() {
         root.watchGeo();
 	};
 
-    //TODO Make this serverside or template it nicer.
-    //This definitely needs less HTML in it.
-    //This should almost all be generated serverside and only switched out in the browser, I think.
-    //That way we can use PHP templating... Alternatively Angular/React but that's heavyweight.
-    //Display option via hiding, rather than actually mutating the DOM. CSS will be much nicer AND much faster.
     root.initialiseForm = function() {
         var form = $("#data-form");
         $.get({
@@ -47,30 +42,63 @@ window.openDataGatherer = function() {
                     root.onInvalidSchema();
                     return;
                 }
-                form.append('<label for="type">Object Type</label>' +
-                    '<select class="form-field" id="schema">' +
-                    '</select>' +
-                    '<br/>');
-                var selectBox = $("#schema");
-                root.schemas.forEach(function(schema) {
-                    selectBox.append("<option value='" + schema.name + "'>" + schema.name + "</option>");
-                });
-                for (var fieldId in root.schemas[0].fields) {
-                    var html = root.schemas[0].fields[fieldId].html;
-                    form.append(html);
-                }
-                form.append('<input type="submit" class="form-field" value="Log Data" id="submit" />');
+                root.setSchema(root.schemas[0]);
             },
             error: root.onInvalidSchema
         });
+        form.change(root.onSchemaChange);
     };
+
+    //TODO Make this serverside or template it nicer.
+    //This definitely needs less HTML in it.
+    //This should almost all be generated serverside and only switched out in the browser, I think.
+    //That way we can use PHP templating... Alternatively Angular/React but that's heavyweight.
+    //Display option via hiding, rather than actually mutating the DOM. CSS will be much nicer AND much faster.
+    root.setSchema = function( newSchema ) {
+        var form = $("#data-form");
+        form.empty();
+
+        //Add the select box;
+        form.append('<label for="type">Object Type</label>' +
+            '<select class="form-field" id="schema">' +
+            '</select>' +
+            '<br/>');
+
+        //Populate the select box
+        var selectBox = $("#schema");
+        root.schemas.forEach(function(schema) {
+            selectBox.append("<option value='" + schema.name + "'>" + schema.name + "</option>");
+        });
+        selectBox.val(newSchema.name);
+
+        //Populate the fields
+        for (var fieldId in newSchema.fields) {
+            var html = newSchema.fields[fieldId].html;
+            form.append(html);
+        }
+
+        //Add a submit button
+        form.append('<input type="submit" class="form-field" value="Log Data" id="submit" />');
+    }
 
     root.onInvalidSchema = function() {
         $("#data-form").append("<p> No schemas available, unable to create form.</p>");
     };
 
-    root.onSchemaChange = function() {
+    root.getSchemaByName = function(name) {
+        var result = null;
+        root.schemas.some(function(schema) {
+            if(schema.name == name) {
+                result = schema;
+                return true;
+            }
+        });
+        return result;
+    };
 
+    root.onSchemaChange = function() {
+        var newSchemaName = $("#schema").val();
+        root.setSchema(root.getSchemaByName(newSchemaName));
     };
 
 	root.setGeoStatusMessage = function(statusMessage) {
@@ -160,7 +188,7 @@ window.openDataGatherer = function() {
         return {
             time: (new Date()).getTime(),
             label: $("#tag").val(),
-            type: $("#type").val(),
+            type: $("#schema").val(),
             position: root.getPosition()
         }
     };
