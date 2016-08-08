@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `data_entries` (
 PRIMARY KEY(`id`)
 );
 DB;
-    public static $addMainEntryQuery = "INSERT INTO open_data.data_entries (`time`, `schema`) VALUES (:time, :schema)";
+    public static $addMainEntryQuery = "INSERT INTO data_entries (`time`, `schema`) VALUES (:time, :schema)";
 }
 //Down here as PHP 5.5 or less doesn't support expressions as initializers.
 DBQueries::$createDatabase = "CREATE DATABASE IF NOT EXISTS " . CONFIG_MYSQL_DB;
