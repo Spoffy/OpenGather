@@ -39,6 +39,7 @@ class TextField extends Field {
     }
 }
 
+//TODO Figure out a way of implementing null drop dropdown fields.
 class DropdownField extends Field {
     private $items;
 
@@ -139,14 +140,15 @@ class ObjectSchema {
 }
 
 //TODO Make JS validate required fields.
+$accessOptions = array("Unknown", "Open", "Card Scanner", "Key");
 $entranceSchema = new ObjectSchema("Building Entrance", array(
     new TextField("Building Number", "buildingId", false),
     new TextField("Entrance Label", "entranceId", false),
     new TextField("Description", "description", false),
     new GeoField("Latitude", "lat", false),
     new GeoField("Longitude", "long", false),
-    new TextField("Access Method Daytime", "accessDaytime", false),
-    new TextField("Access Method Evening", "accessEvening", false)
+    new DropdownField("Access Method Daytime", "accessDaytime", $accessOptions),
+    new DropdownField("Access Method Evening", "accessEvening", $accessOptions)
 ));
 
 $otherSchema = new ObjectSchema("Other", array(
