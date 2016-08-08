@@ -40,14 +40,31 @@ class TextField extends Field {
 }
 
 class DropdownField extends Field {
+    private $items;
+
+    public function __construct($name, $id, $items=array(), $required=false) {
+        parent::__construct($name, $id, $required);
+        $this->items = $items;
+    }
+
     public function buildFormField()
     {
-        // TODO: Implement buildFormField() method.
+        $field = "<label for='" . $this->getFormFieldId() . "'>$this->name</label>";
+        $field .= "<select id='" . $this->getFormFieldId(). "' class='".$this->formFieldClasses . "'>\n";
+        foreach($this->items as $item) {
+            $field .= "<option value='$item'>$item</option>\n";
+        }
+        $field .= "</select>\n";
+        return $field;
     }
 
     public function buildMySQLColumn()
     {
-        // TODO: Implement buildMySQLColumn() method.
+        $formatted_items = array_map(function ($item) {
+            return "'$item'";
+        }, $this->items);
+        $csv_items = implode(",", $formatted_items);
+        return "`$this->id` ENUM(" . $csv_items . ") " . $this->nullAttributeMySQL();
     }
 }
 
