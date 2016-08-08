@@ -80,7 +80,8 @@ class GeoField extends Field {
 
     public function buildMySQLColumn()
     {
-        return "`$this->id` DECIMAL(13,10) ".$this->nullAttributeMySQL();
+        //DECIMAL(9,6) gives us accuracy to around 0.11m, more than enough.
+        return "`$this->id` DECIMAL(9,6) ".$this->nullAttributeMySQL();
     }
 }
 
