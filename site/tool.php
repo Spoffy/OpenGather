@@ -23,7 +23,6 @@
         <div class="height_control"></div>
         <div id="geo_status"></div>
     </div>
-    <p id="location"></p>
     <p id="geo_status_text">Tool not initialised</p>
 </div>
 

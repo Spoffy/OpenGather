@@ -28,6 +28,8 @@ window.openDataGatherer = function() {
             root.pollGeo();
         });
 
+        window.clickymap.map.on('click', root.updateFormLocationIfExists);
+
         root.watchGeo();
 	};
 
@@ -123,17 +125,23 @@ window.openDataGatherer = function() {
 		}
 	};
 
-    root.setGeoLocationMessage = function(statusMessage) {
-        $("#location").text(statusMessage);
-    };
-
     //TODO Unify location format
     root.onGeoSuccess = function(pos) {
         root.setGeoStatus(root.GEO_STATUSES.SUCCEEDED);
         root.setGeoStatusMessage("Position acquired with accuracy of " + pos.coords.accuracy + "m");
-        root.setGeoLocationMessage("Pos: " + pos.coords.latitude + " " + pos.coords.longitude);
         root.lastPosition = pos;
         window.clickymap.setMapCentre(pos.coords.latitude, pos.coords.longitude);
+        root.updateFormLocationIfExists();
+    };
+
+    //TODO Do this without relying on form_lat and form_long
+    root.updateFormLocationIfExists = function() {
+        var lat_field = $("#form_lat");
+        var long_field = $("#form_long");
+        if(lat_field.length <= 0 || long_field.length <= 0) { return; }
+        var position = root.getPosition();
+        lat_field.val(position.lat);
+        long_field.val(position.long);
     };
 
     root.onGeoError = function(error) {
@@ -145,7 +153,6 @@ window.openDataGatherer = function() {
         if("geolocation" in navigator) {
             root.setGeoStatus(root.GEO_STATUSES.ACQUIRING);
             root.setGeoStatusMessage("Acquiring position...");
-            root.setGeoLocationMessage("");
 
             geoRequestFunction(
                 root.onGeoSuccess,
