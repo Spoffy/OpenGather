@@ -37,6 +37,7 @@ try {
     $message .= "    Data: " . json_encode($_POST);
     error_log($message);
     print("MySQL Database error. See PHP error log");
+    header("HTTP/1.1 500 Internal Server Error");
     die();
 } catch(Error $e) {
     error_log("Hello!");
