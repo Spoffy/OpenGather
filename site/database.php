@@ -59,4 +59,9 @@ class Database {
         $insertStatement = $this->conn->prepare($schema->buildMySQLInsertQuery());
         $insertStatement->execute($insertionBindings);
     }
+
+    public function retrieveData($schema) {
+        $statement = $this->conn->query($schema->buildMySQLSelectQuery());
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
