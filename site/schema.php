@@ -126,7 +126,7 @@ class ObjectSchema {
     }
 
     public function buildMySQLSelectQuery() {
-        $columns = ['time'] + array_map(function ($field) { return $field->id; }, $this->fields);
+        $columns = array_merge(['time'], array_map(function ($field) { return $field->id; }, $this->fields));
         $quotedColumns = array_map(function($name) { return "`$name`"; }, $columns);
         $columnString = implode($quotedColumns, ",");
         $selectQuery = "SELECT $columnString FROM data_entries INNER JOIN `$this->id` ON `data_entries`.`id` = `$this->id`.`id`;";
