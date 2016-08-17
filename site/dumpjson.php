@@ -14,6 +14,6 @@ foreach($schemas as $schema) {
         $result = $schema;
     }
 }
-
+if(!$result) { die(); }
 $database = Database::createAndConnect();
 print(json_encode($database->retrieveData($result)));
