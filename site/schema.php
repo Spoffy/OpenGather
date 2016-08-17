@@ -94,6 +94,8 @@ class ObjectSchema {
     public function __construct($name, $fields = array())
     {
         $this->name = $name;
+        //TODO Format id using a transform of lowercase and spaces to underscores
+        //....After pulling all the data.
         $this->id = $name;
         $this->fields = $fields;
     }
