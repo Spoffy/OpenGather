@@ -1,7 +1,3 @@
-<?php
-    $categories = array("Building", "Portal", "Image", "Water Source", "Showers", "Lecture Room");
-?>
-
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
