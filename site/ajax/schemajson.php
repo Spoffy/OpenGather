@@ -1,6 +1,6 @@
 <?php
 $basePath = dirname(dirname(__DIR__));
-require_once("$basePath/src/schema.php");
+require_once("$basePath/current_schema.php");
 
 $preparedSchemas = array();
 foreach($schemas as $schema) {

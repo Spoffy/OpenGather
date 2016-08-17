@@ -1,7 +1,7 @@
 <?php
 $base_path = dirname(__DIR__);
 require_once("$base_path/config.php");
-require_once("$base_path/src/schema.php");
+require_once("$base_path/current_schema.php");
 require_once("$base_path/src/database.php");
 
 try {
