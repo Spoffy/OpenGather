@@ -1,4 +1,7 @@
 <?php
+$base_path = dirname(__DIR__);
+require_once("$base_path/src/functional/pluck.php");
+
 //Defines a schemas for the data to be gathered, and the tools to work with that schemas.
 
 abstract class Field {
@@ -126,7 +129,7 @@ class ObjectSchema {
     }
 
     public function buildMySQLSelectQuery() {
-        $columns = array_merge(['time', 'schema'], array_map(function ($field) { return $field->id; }, $this->fields));
+        $columns = array_merge(array('time', 'schema'), pluck($this->fields, "id"));
         $quotedColumns = array_map(function($name) { return "`$name`"; }, $columns);
         $columnString = implode($quotedColumns, ",");
         $selectQuery = "SELECT $columnString FROM data_entries INNER JOIN `$this->id` ON `data_entries`.`id` = `$this->id`.`id`;";
