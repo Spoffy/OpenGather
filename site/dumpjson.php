@@ -8,12 +8,23 @@ require_once("$base_path/site/database.php");
 $queryParams = array();
 parse_str($_SERVER['QUERY_STRING'], $queryParams);
 
-$result = null;
-foreach($schemas as $schema) {
-    if(strtolower($schema->id) == strtolower($queryParams["id"])) {
-        $result = $schema;
+$database = Database::createAndConnect();
+$output = [];
+
+if(key_exists("id", $queryParams)) {
+    $result = null;
+    foreach($schemas as $schema) {
+        if(strtolower($schema->id) == strtolower($queryParams["id"])) {
+            $result = $schema;
+        }
+    }
+    if(!$result) { die(); }
+    $output = $database->retrieveData($result);
+} else {
+    foreach($schemas as $schema) {
+        $output = array_merge($output, $database->retrieveData($schema));
     }
 }
-if(!$result) { die(); }
-$database = Database::createAndConnect();
-print(json_encode($database->retrieveData($result)));
+
+print(json_encode($output));
+
