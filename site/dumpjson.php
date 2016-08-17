@@ -1,7 +1,7 @@
 <?php
 $base_path = dirname(__DIR__);
-require_once("$base_path/site/schema.php");
-require_once("$base_path/site/database.php");
+require_once("$base_path/src/schema.php");
+require_once("$base_path/src/database.php");
 
 //TODO Make this functional/neater
 //TODO Made this safer

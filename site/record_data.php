@@ -1,8 +1,8 @@
 <?php
 $base_path = dirname(__DIR__);
 require_once("$base_path/config.php");
-require_once("schema.php");
-require_once("database.php");
+require_once("$base_path/src/schema.php");
+require_once("$base_path/src/database.php");
 
 try {
     if(!array_key_exists("time", $_POST) || !array_key_exists("schema", $_POST)) {

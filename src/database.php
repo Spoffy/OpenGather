@@ -1,6 +1,6 @@
 <?php
 $base_path = dirname(__DIR__);
-require_once("$base_path/site/schema.php");
+require_once("$base_path/src/schema.php");
 require_once("$base_path/config.php");
 
 //Contains all the query constants.
