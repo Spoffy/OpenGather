@@ -15,14 +15,16 @@ $output = array();
 
 //Attempting to select results for only a single schema
 if(key_exists("schema", $queryParams)) {
-    $schemaId = $queryParams["schema"];
+    $querySchemaId = $queryParams["schema"];
+    $schemaIdEqualsQueryId = function($schema) {global $querySchemaId; return $schema->id == $querySchemaId;};
     //First schema where the id equals given id.
-    $schema = first($schemas, function($schema) {global $schemaId; return $schema->id == $schemaId;});
+    $schema = first($schemas, $schemaIdEqualsQueryId);
     if(!$schema) { die(); }
-    $output = $database->retrieveData($schema);
+    $convertDataToJSONEncodableArray = array($schema, 'dataToJSONEncodable');
+    $output = array_map($convertDataToJSONEncodableArray, $database->retrieveData($schema));
 } else {
     foreach($schemas as $schema) {
-        $output = array_merge($output, $database->retrieveData($schema));
+        $output = array_merge($output, array_map(array($schema, 'convertDataToJSONEncodable'), $database->retrieveData($schema)));
     }
 }
 

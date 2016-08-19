@@ -152,6 +152,23 @@ class ObjectSchema {
         }
         return $object;
     }
+
+    public function convertDataToJSONEncodable(array $data) {
+        $formattedData = array(
+            "time" => $data["time"],
+            "schema" => $data["schema"],
+            //TODO Add Schema Version
+            "contents" => array()
+        );
+
+        foreach($this->fields as $field) {
+            if(key_exists($field->id, $data)) {
+                $formattedData["contents"][$field->id] = $data[$field->id];
+            }
+        }
+
+        return $formattedData;
+    }
 }
 
 //TODO Make JS validate required fields.
