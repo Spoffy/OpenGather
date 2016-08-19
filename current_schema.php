@@ -55,6 +55,14 @@ $schemas = array(
         new TextField("Opening Hours: Sun", "sunOpening", false)
     )),
 
+    new ObjectSchema("Room", array(
+        new TextField("Building Number", "buildingId", false),
+        new TextField("Room Number", "roomNumber", false),
+        new TextField("Room Name", "roomName", false),
+        new GeoField("Latitude", "lat", false),
+        new GeoField("Longitude", "long", false)
+    )),
+
     new ObjectSchema("Other", array(
         new TextField("Description", "description", false),
     ))
