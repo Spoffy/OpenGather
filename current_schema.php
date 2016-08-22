@@ -8,39 +8,39 @@ $openingOptions = array("Manual - Push/Pull", "Sensor + Automatic", "Pushbutton 
 global $schemas;
 $schemas = array(
     new ObjectSchema("Building Entrance", array(
-        new TextField("Building Number", "buildingId", false),
+        new TextField("Building Number", "buildingId", true),
         new TextField("Entrance Label", "entranceId", false),
-        new TextField("Description", "description", false),
-        new GeoField("Latitude", "lat", false),
-        new GeoField("Longitude", "long", false),
+        new TextField("Description", "description", true),
+        new GeoField("Latitude", "lat", true),
+        new GeoField("Longitude", "long", true),
         new DropdownField("Access Method Daytime", "accessDaytime", $accessOptions),
         new DropdownField("Access Method Evening", "accessEvening", $accessOptions),
         new DropdownField("Opening Method", "openingMethod", $openingOptions)
     )),
 
     new ObjectSchema("Image (Building)", array(
-        new TextField("Building Number", "buildingId", false),
+        new TextField("Building Number", "buildingId", true),
         new GeoField("Latitude", "lat", false),
         new GeoField("Longitude", "long", false)
     )),
 
     new ObjectSchema("Drinking Water Source", array(
-        new TextField("Building Number", "buildingId", false),
-        new TextField("Floor", "floor", false),
-        new GeoField("Latitude", "lat", false),
-        new GeoField("Longitude", "long", false)
+        new TextField("Building Number", "buildingId", true),
+        new TextField("Floor", "floor", true),
+        new GeoField("Latitude", "lat", true),
+        new GeoField("Longitude", "long", true)
     )),
 
     new ObjectSchema("Public Showers", array(
-        new TextField("Building Number", "buildingId", false),
-        new TextField("Floor", "floor", false),
+        new TextField("Building Number", "buildingId", true),
+        new TextField("Floor", "floor", true),
         new TextField("Room Number", "roomId", false),
-        new GeoField("Latitude", "lat", false),
-        new GeoField("Longitude", "long", false)
+        new GeoField("Latitude", "lat", true),
+        new GeoField("Longitude", "long", true)
     )),
 
     new ObjectSchema("Point of Service", array(
-        new TextField("Description", "description", false),
+        new TextField("Description", "description", true),
         new TextField("Building Number (If Applicable)", "buildingId", false),
         new GeoField("Latitude", "lat", false),
         new GeoField("Longitude", "long", false),
@@ -56,14 +56,14 @@ $schemas = array(
     )),
 
     new ObjectSchema("Room", array(
-        new TextField("Building Number", "buildingId", false),
+        new TextField("Building Number", "buildingId", true),
         new TextField("Room Number", "roomNumber", false),
-        new TextField("Room Name", "roomName", false),
+        new TextField("Room Name", "roomName", true),
         new GeoField("Latitude", "lat", false),
         new GeoField("Longitude", "long", false)
     )),
 
     new ObjectSchema("Other", array(
-        new TextField("Description", "description", false),
+        new TextField("Description", "description", true),
     ))
 );
