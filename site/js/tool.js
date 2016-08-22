@@ -16,12 +16,6 @@ window.openDataGatherer = function() {
     };
 
 	root.onReady = function() {
-		$("#data-form").submit(function(e) {
-			e.preventDefault();
-            console.log(root.getData());
-            root.postData(root.getData());
-		});
-
         root.initialiseForm();
 
         $("#geo_status").click(function (e) {
@@ -48,7 +42,18 @@ window.openDataGatherer = function() {
             },
             error: root.onInvalidSchema
         });
+
+        form.submit(function(e) {
+            e.preventDefault();
+            if(!root.validateAndHighlight()) {
+                console.log("Not submitting, form failed validation");
+                return;
+            }
+            console.log(root.getData());
+            root.postData(root.getData());
+        });
     };
+    
 
     //TODO Make this serverside or template it nicer.
     //This definitely needs less HTML in it.
@@ -76,11 +81,11 @@ window.openDataGatherer = function() {
         selectBox.change(root.onSchemaChange)
 
         //Populate the fields
-        for (var fieldId in newSchema.fields) {
-            var html = newSchema.fields[fieldId].html;
+        newSchema.fields.forEach(function(field) {
+            var html = field.html;
             html += "<br/>";
             form.append(html);
-        }
+        });
 
         //Add a submit button
         form.append('<input type="submit" class="form-field" value="Log Data" id="submit" />');
