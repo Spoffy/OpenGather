@@ -147,6 +147,7 @@ class ObjectSchema {
                 "name" => $field->name,
                 "id" => $field->id,
                 "formId" => $field->getFormFieldId(),
+                "required" => $field->required,
                 "html" => $field->buildFormField()
             );
         }

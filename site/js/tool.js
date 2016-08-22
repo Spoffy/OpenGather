@@ -53,7 +53,23 @@ window.openDataGatherer = function() {
             root.postData(root.getData());
         });
     };
-    
+
+    root.validateAndHighlight = function() {
+        var success = true;
+        if(root.currentSchema) {
+            root.currentSchema.fields.forEach(function (field) {
+                var formField = $("#" + field.formId);
+                //If form field is required and empty...
+                if (field.required && !formField.val()) {
+                    formField.css("background", "red");
+                    success = false;
+                }
+            });
+        } else {
+            success = false;
+        }
+        return success;
+    };
 
     //TODO Make this serverside or template it nicer.
     //This definitely needs less HTML in it.
