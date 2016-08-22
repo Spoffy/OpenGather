@@ -4,6 +4,7 @@ require_once("$base_path/src/schema.php");
 
 $accessOptions = array("Unknown", "Open", "Card Scanner", "Key");
 $openingOptions = array("Manual - Push/Pull", "Sensor + Automatic", "Pushbutton + Automatic");
+$roomTypes = array("Gender-neutral Toilet", "Lecture Room", "Other");
 
 global $schemas;
 $schemas = array(
@@ -60,7 +61,8 @@ $schemas = array(
         new TextField("Room Number", "roomNumber", false),
         new TextField("Room Name", "roomName", true),
         new GeoField("Latitude", "lat", false),
-        new GeoField("Longitude", "long", false)
+        new GeoField("Longitude", "long", false),
+        new DropdownField("Type", "type", $roomTypes, true)
     )),
 
     new ObjectSchema("Other", array(
