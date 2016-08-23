@@ -65,6 +65,12 @@ $schemas = array(
         new DropdownField("Type", "type", $roomTypes, true)
     )),
 
+    new ObjectSchema("Bike Storage", array(
+        new TextField("Additional Info", "description", false),
+        new GeoField("Latitude", "lat", false),
+        new GeoField("Longitude", "long", false)
+    )),
+
     new ObjectSchema("Other", array(
         new TextField("Description", "description", true),
     ))
