@@ -42,7 +42,7 @@ class TextField extends Field {
     }
 }
 
-//TODO Figure out a way of implementing null drop dropdown fields.
+//To add a "null" or "no value" dropdown, simply add empty string "" as an array option.
 class DropdownField extends Field {
     private $items;
 
@@ -73,7 +73,7 @@ class DropdownField extends Field {
 }
 
 //TODO Replace/Add fields for Lat,Long with pre-specified IDs.
-class GeoField extends Field {
+abstract class GeoField extends Field {
     public function buildFormField()
     {
         $label = "<label for='".$this->getFormFieldId()."'>$this->name</label>";
@@ -85,6 +85,20 @@ class GeoField extends Field {
     {
         //DECIMAL(9,6) gives us accuracy to around 0.11m, more than enough.
         return "`$this->id` DECIMAL(9,6) ".$this->nullAttributeMySQL();
+    }
+}
+
+class LongitudeField extends GeoField {
+    public function __construct($required)
+    {
+        parent::__construct("Longitude", "long", $required);
+    }
+}
+
+class LatitudeField extends GeoField {
+    public function __construct($required)
+    {
+        parent::__construct("Latitude", "lat", $required);
     }
 }
 

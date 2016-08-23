@@ -12,8 +12,8 @@ $schemas = array(
         new TextField("Building Number", "buildingId", true),
         new TextField("Entrance Label", "entranceId", false),
         new TextField("Description", "description", true),
-        new GeoField("Latitude", "lat", true),
-        new GeoField("Longitude", "long", true),
+        new LatitudeField(true),
+        new LongitudeField(true),
         new DropdownField("Access Method Daytime", "accessDaytime", $accessOptions),
         new DropdownField("Access Method Evening", "accessEvening", $accessOptions),
         new DropdownField("Opening Method", "openingMethod", $openingOptions)
@@ -21,30 +21,30 @@ $schemas = array(
 
     new ObjectSchema("Image (Building)", array(
         new TextField("Building Number", "buildingId", true),
-        new GeoField("Latitude", "lat", false),
-        new GeoField("Longitude", "long", false)
+        new LatitudeField(true),
+        new LongitudeField(true)
     )),
 
     new ObjectSchema("Drinking Water Source", array(
         new TextField("Building Number", "buildingId", true),
         new TextField("Floor", "floor", true),
-        new GeoField("Latitude", "lat", true),
-        new GeoField("Longitude", "long", true)
+        new LatitudeField(true),
+        new LongitudeField(true)
     )),
 
     new ObjectSchema("Public Showers", array(
         new TextField("Building Number", "buildingId", true),
         new TextField("Floor", "floor", true),
         new TextField("Room Number", "roomId", false),
-        new GeoField("Latitude", "lat", true),
-        new GeoField("Longitude", "long", true)
+        new LatitudeField(true),
+        new LongitudeField(true)
     )),
 
     new ObjectSchema("Point of Service", array(
         new TextField("Description", "description", true),
         new TextField("Building Number (If Applicable)", "buildingId", false),
-        new GeoField("Latitude", "lat", false),
-        new GeoField("Longitude", "long", false),
+        new LatitudeField(true),
+        new LongitudeField(true),
         new TextField("Phone", "phone", false),
         new TextField("Email", "email", false),
         new TextField("Opening Hours: Mon", "monOpening", false),
@@ -60,15 +60,15 @@ $schemas = array(
         new TextField("Building Number", "buildingId", true),
         new TextField("Room Number", "roomNumber", false),
         new TextField("Room Name", "roomName", true),
-        new GeoField("Latitude", "lat", false),
-        new GeoField("Longitude", "long", false),
+        new LatitudeField(true),
+        new LongitudeField(true),
         new DropdownField("Type", "type", $roomTypes, true)
     )),
 
     new ObjectSchema("Bike Storage", array(
         new TextField("Additional Info", "description", false),
-        new GeoField("Latitude", "lat", false),
-        new GeoField("Longitude", "long", false)
+        new LatitudeField(true),
+        new LongitudeField(true)
     )),
 
     new ObjectSchema("Other", array(
