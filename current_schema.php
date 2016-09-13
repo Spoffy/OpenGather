@@ -4,7 +4,7 @@ require_once("$base_path/src/schema.php");
 
 $accessOptions = array("Unknown", "Open", "Keycode", "Card Scanner", "Key");
 $openingOptions = array("Manual - Push/Pull", "Pushbutton + Automatic", "Sensor + Automatic", "Other automatic", "Rotating");
-$roomTypes = array("Gender-neutral Toilet", "Lecture Room", "Other");
+$roomTypes = array("Gender-neutral Toilet", "Lecture Room", "Public Shower", "Other");
 
 global $schemas;
 $schemas = array(
@@ -28,14 +28,6 @@ $schemas = array(
     new ObjectSchema("Drinking Water Source", array(
         new TextField("Building Number", "buildingId", true),
         new TextField("Floor", "floor", true),
-        new LatitudeField(true),
-        new LongitudeField(true)
-    )),
-
-    new ObjectSchema("Public Showers", array(
-        new TextField("Building Number", "buildingId", true),
-        new TextField("Floor", "floor", true),
-        new TextField("Room Number", "roomId", false),
         new LatitudeField(true),
         new LongitudeField(true)
     )),
