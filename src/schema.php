@@ -170,7 +170,7 @@ class ObjectSchema {
 
     public function convertDataToJSONEncodable(array $data) {
         $formattedData = array(
-            "time" => $data["time"],
+            "time" => (int) $data["time"],
             "schema" => $data["schema"],
             //TODO Add Schema Version
             "contents" => array()
