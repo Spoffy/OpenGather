@@ -2,8 +2,8 @@
 $base_path = __DIR__;
 require_once("$base_path/src/schema.php");
 
-$accessOptions = array("Unknown", "Open", "Card Scanner", "Key");
-$openingOptions = array("Manual - Push/Pull", "Sensor + Automatic", "Pushbutton + Automatic");
+$accessOptions = array("Unknown", "Open", "Keycode", "Card Scanner", "Key");
+$openingOptions = array("Manual - Push/Pull", "Pushbutton + Automatic", "Sensor + Automatic", "Other automatic", "Rotating");
 $roomTypes = array("Gender-neutral Toilet", "Lecture Room", "Other");
 
 global $schemas;
