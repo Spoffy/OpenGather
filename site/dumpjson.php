@@ -20,7 +20,7 @@ if(key_exists("schema", $queryParams)) {
     //First schema where the id equals given id.
     $schema = first($schemas, $schemaIdEqualsQueryId);
     if(!$schema) { die(); }
-    $convertDataToJSONEncodableArray = array($schema, 'dataToJSONEncodable');
+    $convertDataToJSONEncodableArray = array($schema, 'convertDataToJSONEncodable');
     $output = array_map($convertDataToJSONEncodableArray, $database->retrieveData($schema));
 } else {
     foreach($schemas as $schema) {
@@ -29,4 +29,3 @@ if(key_exists("schema", $queryParams)) {
 }
 
 print(json_encode($output));
-
